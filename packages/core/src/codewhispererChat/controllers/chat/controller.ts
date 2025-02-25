@@ -494,6 +494,7 @@ export class ChatController {
                         .map(([name]) => ({
                             command: path.basename(name, promptFileExtension),
                             icon: 'magic' as MynahIconsType,
+                            id: 'prompt',
                             route: [userPromptsDirectory, name],
                         }))
                 )
@@ -522,6 +523,7 @@ export class ChatController {
                         command: path.basename(contextCommandItem.relativePath),
                         description: path.join(wsFolderName, contextCommandItem.relativePath),
                         route: [contextCommandItem.workspaceFolder, contextCommandItem.relativePath],
+                        id: 'file',
                         icon: 'file' as MynahIconsType,
                     })
                 } else {
@@ -529,6 +531,7 @@ export class ChatController {
                         command: path.basename(contextCommandItem.relativePath),
                         description: path.join(wsFolderName, contextCommandItem.relativePath),
                         route: [contextCommandItem.workspaceFolder, contextCommandItem.relativePath],
+                        id: 'folder',
                         icon: 'folder' as MynahIconsType,
                     })
                 }
@@ -578,6 +581,7 @@ export class ChatController {
             await fs.writeFile(newFilePath, newFileContent)
             const newFileDoc = await vscode.workspace.openTextDocument(newFilePath)
             await vscode.window.showTextDocument(newFileDoc)
+            telemetry.amazonq_createSavedPrompt.emit()
         }
     }
 

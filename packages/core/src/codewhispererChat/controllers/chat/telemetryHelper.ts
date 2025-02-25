@@ -405,6 +405,7 @@ export class CWCTelemetryHelper {
                 ? triggerPayload.relevantTextDocuments.length > 0 && triggerPayload.useRelevantDocuments === true
                 : false,
             cwsprChatProjectContextQueryMs: triggerPayload.projectContextQueryLatencyMs,
+            ...this.getContextCounts(triggerPayload),
         })
     }
 
@@ -418,6 +419,45 @@ export class CWCTelemetryHelper {
             triggerPayload,
             message,
         })
+    }
+
+    private getContextCounts(triggerPayload: TriggerPayload) {
+        let fileContextCount = 0
+        let folderContextCount = 0
+        let rulesContextCount = 0
+        let savedPromptsContextCount = 0
+        let contextTotalLength = 0
+
+        if (triggerPayload.context?.length) {
+            for (const contextItem of triggerPayload.context) {
+                if (typeof contextItem !== 'string') {
+                    if (contextItem.id === 'file') {
+                        fileContextCount++
+                    } else if (contextItem.id === 'folder') {
+                        folderContextCount++
+                    } else if (contextItem.id === 'prompt') {
+                        savedPromptsContextCount++
+                    }
+                }
+            }
+        }
+        rulesContextCount +=
+            triggerPayload.documentReferences?.filter((doc) => doc.relativeFilePath.startsWith('.amazonq/rules'))
+                .length || 0
+
+        if (triggerPayload.additionalContents?.length) {
+            for (const test of triggerPayload.additionalContents) {
+                contextTotalLength += test.innerContext?.length || 0
+            }
+        }
+
+        return {
+            cwsprChatFileContextCount: fileContextCount,
+            cwsprChatFolderContextCount: folderContextCount,
+            cwsprChatRulesContextCount: rulesContextCount,
+            cwsprChatUserPromptContextCount: savedPromptsContextCount,
+            cwsprChatContextLength: contextTotalLength,
+        }
     }
 
     public emitAddMessage(tabID: string, fullDisplayLatency: number, traceId: string, startTime?: number) {
@@ -464,6 +504,7 @@ export class CWCTelemetryHelper {
             credentialStartUrl: AuthUtil.instance.startUrl,
             codewhispererCustomizationArn: triggerPayload.customization.arn,
             cwsprChatHasProjectContext: hasProjectLevelContext,
+            ...this.getContextCounts(triggerPayload),
             traceId,
         }
 
