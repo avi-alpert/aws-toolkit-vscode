@@ -84,6 +84,31 @@
             "description": "Query latency in ms for local project context"
         },
         {
+            "name": "cwsprChatFileContextCount",
+            "type": "int",
+            "description": "# of file contexts included in the prompt"
+        },
+        {
+            "name": "cwsprChatFolderContextCount",
+            "type": "int",
+            "description": "# of folder contexts included in the prompt"
+        },
+        {
+            "name": "cwsprChatUserPromptContextCount",
+            "type": "int",
+            "description": "# of saved user prompts included in the prompt"
+        },
+        {
+            "name": "cwsprChatRulesContextCount",
+            "type": "int",
+            "description": "# of workspace rules"
+        },
+        {
+            "name": "cwsprChatContextLength",
+            "type": "int",
+            "description": "The total length of the context added by user"
+        },
+        {
             "name": "amazonqIndexFileSizeInMB",
             "type": "int",
             "description": "The sum of file sizes that were indexed in MB"
@@ -639,6 +664,10 @@
             "description": "When chat panel is closed"
         },
         {
+            "name": "amazonq_createSavedPrompt",
+            "description": "When a saved user prompt is created"
+        },
+        {
             "name": "amazonq_startConversation",
             "description": "When user starts a new conversation",
             "metadata": [
@@ -673,6 +702,26 @@
                 },
                 {
                     "type": "cwsprChatProjectContextQueryMs",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatUserPromptContextCount",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatRulesContextCount",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatFileContextCount",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatFolderContextCount",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatContextLength",
                     "required": false
                 }
             ]
@@ -803,6 +852,26 @@
                 },
                 {
                     "type": "codewhispererCustomizationArn",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatUserPromptContextCount",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatRulesContextCount",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatFileContextCount",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatFolderContextCount",
+                    "required": false
+                },
+                {
+                    "type": "cwsprChatContextLength",
                     "required": false
                 }
             ]
